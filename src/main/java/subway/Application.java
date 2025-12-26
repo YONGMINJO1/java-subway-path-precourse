@@ -1,66 +1,22 @@
 package subway;
 
 import java.util.Scanner;
+import subway.controller.SubwayController;
 import subway.domain.Line;
 import subway.domain.LineRepository;
-import subway.domain.Path;
-import subway.domain.PathFinder;
 import subway.domain.Section;
 import subway.domain.Station;
 import subway.domain.StationRepository;
 import subway.view.InputView;
-import subway.view.OutputView;
 
 public class Application {
     public static void main(String[] args) {
         initializeData();
         final Scanner scanner = new Scanner(System.in);
         InputView inputView = new InputView(scanner);
-        PathFinder pathFinder = new PathFinder();
+        SubwayController controller = new SubwayController(inputView);
 
-        while (true) {
-            OutputView.printMainMenu();
-            String choice = inputView.readMenu();
-
-            if (choice.equals("Q")) {
-                break;
-            }
-
-            if (choice.equals("1")) {
-                handlePathSearch(inputView, pathFinder);
-            }
-        }
-    }
-
-    private static void handlePathSearch(InputView inputView, PathFinder pathFinder) {
-        try {
-            OutputView.printPathCriteriaMenu();
-            String criteria = inputView.readMenu();
-
-            if (criteria.equals("B")) {
-                return;
-            }
-
-            String sourceName = inputView.readStation("## 출발역을 입력하세요.");
-            Station source = findStationByName(sourceName);
-            String targetName = inputView.readStation("## 도착역을 입력하세요.");
-            //Station source = findStationByName(sourceName);
-            Station target = findStationByName(targetName);
-
-            boolean isDistance = criteria.equals("1");
-            Path path = pathFinder.findPath(source, target, isDistance);
-            OutputView.printResult(path);
-        } catch (IllegalArgumentException e) {
-            OutputView.printError(e.getMessage());
-        }
-
-    }
-
-    private static Station findStationByName(String name) {
-        return StationRepository.stations().stream()
-                .filter(station -> station.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 역 입니다."));
+        controller.run();
     }
 
     private static void initializeData() {
