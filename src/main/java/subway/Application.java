@@ -33,23 +33,27 @@ public class Application {
     }
 
     private static void handlePathSearch(InputView inputView, PathFinder pathFinder) {
-        OutputView.printPathCriteriaMenu();
-        String criteria = inputView.readMenu();
+        try {
+            OutputView.printPathCriteriaMenu();
+            String criteria = inputView.readMenu();
 
-        if (criteria.equals("B")) {
-            return;
+            if (criteria.equals("B")) {
+                return;
+            }
+
+            String sourceName = inputView.readStation("## 출발역을 입력하세요.");
+            Station source = findStationByName(sourceName);
+            String targetName = inputView.readStation("## 도착역을 입력하세요.");
+            //Station source = findStationByName(sourceName);
+            Station target = findStationByName(targetName);
+
+            boolean isDistance = criteria.equals("1");
+            Path path = pathFinder.findPath(source, target, isDistance);
+            OutputView.printResult(path);
+        } catch (IllegalArgumentException e) {
+            OutputView.printError(e.getMessage());
         }
 
-        String sourceName = inputView.readStation("## 출발역을 입력하세요.");
-        String targetName = inputView.readStation("## 도착역을 입력하세요.");
-
-        Station source = findStationByName(sourceName);
-        Station target = findStationByName(targetName);
-
-        boolean isDistance = criteria.equals("1");
-        Path path = pathFinder.findPath(source, target, isDistance);
-
-        OutputView.printResult(path);
     }
 
     private static Station findStationByName(String name) {
