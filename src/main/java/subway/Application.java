@@ -3,11 +3,6 @@ package subway;
 import java.util.Scanner;
 import subway.controller.SubwayController;
 import subway.domain.DataInitializer;
-import subway.domain.Line;
-import subway.domain.LineRepository;
-import subway.domain.Section;
-import subway.domain.Station;
-import subway.domain.StationRepository;
 import subway.view.InputView;
 
 public class Application {

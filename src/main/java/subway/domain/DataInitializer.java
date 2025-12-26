@@ -1,7 +1,7 @@
 package subway.domain;
 
 public class DataInitializer {
-    // 필드 변수로 선언
+
     private static Station 교대역;
     private static Station 강남역;
     private static Station 역삼역;
